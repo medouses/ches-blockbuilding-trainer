@@ -15,8 +15,8 @@ const initialState = {
 };
 
 export function useSmartCube() {
-  const service = new SmartCubeConnectionService();
   const state = shallowReactive({ ...initialState });
+  const service = new SmartCubeConnectionService();
 
   async function reset() {
     await service.sendCommand(SmartCubeCommands.Reset).catch((error) => {

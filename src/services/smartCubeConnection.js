@@ -60,8 +60,8 @@ export class SmartCubeConnectionService {
     this._connection.events$.subscribe(this._handleCubeEvent);
 
     return {
-      deviceName: this._connection.deviceName,
-      deviceMac: this._connection.deviceMAC,
+      name: this._connection.deviceName,
+      mac: this._connection.deviceMAC,
     };
   };
 

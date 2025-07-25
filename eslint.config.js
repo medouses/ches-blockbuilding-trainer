@@ -8,6 +8,7 @@ export default [
   {
     rules: {
       "vue/max-attributes-per-line": "off",
+      "vue/singleline-html-element-content-newline": "off",
     },
     languageOptions: {
       sourceType: "module",

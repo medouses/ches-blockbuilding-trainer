@@ -9,8 +9,8 @@ const smartCube = useSmartCubeStore();
   <Toolbar class="connection-toolbar">
     <template #start>
       <div class="connection-info">
-        <span>name: {{ smartCube.deviceName || "none" }}</span>
-        <span>mac: {{ smartCube.deviceMac || "none" }}</span>
+        <span>name: {{ smartCube.deviceName.name || "none" }}</span>
+        <span>mac: {{ smartCube.deviceInfo.mac || "none" }}</span>
       </div>
     </template>
 
@@ -29,7 +29,7 @@ const smartCube = useSmartCubeStore();
 }
 
 .connection-info {
-  margin-left: 0.5rem;
+  /* margin-left: 0.5rem; */
   display: flex;
   gap: 1.5rem;
 }
