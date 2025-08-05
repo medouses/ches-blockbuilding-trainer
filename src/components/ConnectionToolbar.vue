@@ -9,8 +9,8 @@ const smartCube = useSmartCubeStore();
   <Toolbar class="connection-toolbar">
     <template #start>
       <div class="connection-info">
-        <span>name: {{ smartCube.deviceName.name || "none" }}</span>
-        <span>mac: {{ smartCube.deviceInfo.mac || "none" }}</span>
+        <span>name: {{ smartCube.deviceInfo?.name || "none" }}</span>
+        <span>mac: {{ smartCube.deviceInfo?.mac || "none" }}</span>
       </div>
     </template>
 

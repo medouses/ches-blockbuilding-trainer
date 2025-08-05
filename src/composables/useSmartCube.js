@@ -3,8 +3,8 @@ import { faceletsToPattern } from "gan-cube-sample-utils";
 import {
   SmartCubeEvents,
   SmartCubeCommands,
-  SmartCubeConnectionService,
-} from "../services/smartCubeConnection";
+  SmartCubeService,
+} from "../services/smartCubeService";
 
 const initialState = {
   isConnected: false,
@@ -16,30 +16,34 @@ const initialState = {
 
 export function useSmartCube() {
   const state = shallowReactive({ ...initialState });
-  const service = new SmartCubeConnectionService();
+  const service = new SmartCubeService();
 
   async function reset() {
-    await service.sendCommand(SmartCubeCommands.Reset).catch((error) => {
-      console.error("reset failed:", error);
-    });
+    try {
+      await service.sendCommand(SmartCubeCommands.Reset);
+    } catch (error) {
+      console.error("failed to reset cube:", error);
+    }
   }
 
   async function connect(macAddress) {
-    await service.connect(macAddress).then(
-      async (info) => {
-        state.isConnected = true;
-        state.deviceInfo = info;
-        await service.sendCommand(SmartCubeCommands.Facelets);
-        console.debug("smart cube connected!");
-      },
-      (error) => console.error("smart cube connection failed:", error)
-    );
+    try {
+      const value = await service.connect(macAddress);
+      await service.sendCommand(SmartCubeCommands.Facelets);
+      state.isConnected = true;
+      state.deviceInfo = value;
+      console.debug("cube connected!");
+    } catch (error) {
+      console.error("failed to connect cube:", error);
+    }
   }
 
   async function disconnect() {
-    await service.disconnect().catch((error) => {
-      console.error("smart cube disconnection failed:", error);
-    });
+    try {
+      await service.disconnect();
+    } catch (error) {
+      console.error("failed to disconnect cube:", error);
+    }
   }
 
   service.onEvent(SmartCubeEvents.Move, (event) => {
@@ -55,7 +59,7 @@ export function useSmartCube() {
 
   service.onEvent(SmartCubeEvents.Disconnect, () => {
     Object.assign(state, initialState);
-    console.debug("smart cube disconnected!");
+    console.debug("cube disconnected!");
   });
 
   return { ...toRefs(state), reset, connect, disconnect };

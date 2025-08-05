@@ -3,18 +3,16 @@ import { ref, computed, watch } from "vue";
 import { Card, Button } from "primevue";
 import { useSmartCubeStore } from "../stores/smartCube";
 import { useTrainerStore } from "../stores/trainer";
-import { TrainerStages } from "../composables/useTrainer";
+import { TrainerStages } from "../services/trainerService";
 
 const smartCube = useSmartCubeStore();
 const trainer = useTrainerStore();
 const progress = ref(0);
-const steps = computed(() => trainer.scramble?.split(" ") || []);
+const steps = computed(() => trainer.case.scramble?.split(" ") || []);
 
 watch(
   () => trainer.stage,
-  (newStage) => {
-    if (newStage) progress.value = 0;
-  }
+  () => (progress.value = 0)
 );
 
 watch(
@@ -40,11 +38,19 @@ watch(
       <div class="scramble-row">
         <div class="scramble-text">
           <template v-if="trainer.isActive">
-            <span class="scramble-complete">
-              {{ steps.slice(0, progress).join(" ") + " " }}
-            </span>
-            <span>
-              {{ steps.slice(progress).join(" ") }}
+            <template v-if="trainer.stage == TrainerStages.Scrambling">
+              <span class="scramble-complete">
+                {{ steps.slice(0, progress).join(" ") + " " }}
+              </span>
+              <span>
+                {{ steps.slice(progress).join(" ") }}
+              </span>
+            </template>
+            <span
+              v-else-if="trainer.stage == TrainerStages.Solving"
+              class="scramble-inactive"
+            >
+              {{ steps.join(" ") }}
             </span>
           </template>
           <span v-else>press next to begin</span>
@@ -70,5 +76,9 @@ watch(
 
 .scramble-complete {
   color: #5aa064;
+}
+
+.scramble-inactive {
+  color: #999999;
 }
 </style>

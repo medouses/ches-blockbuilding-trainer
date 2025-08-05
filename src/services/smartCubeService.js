@@ -16,8 +16,8 @@ export const SmartCubeCommands = {
   Hardware: "REQUEST_HARDWARE",
 };
 
-export class SmartCubeConnectionService {
-  _handleCubeEvent = (event) => {
+export class SmartCubeService {
+  _handleEvent = (event) => {
     if (this._callbacks.has(event.type)) {
       for (const callback of this._callbacks.get(event.type)) {
         callback(event);
@@ -57,7 +57,7 @@ export class SmartCubeConnectionService {
     }
 
     this._connection = await connectGanCube(macAddressProvider);
-    this._connection.events$.subscribe(this._handleCubeEvent);
+    this._connection.events$.subscribe(this._handleEvent);
 
     return {
       name: this._connection.deviceName,

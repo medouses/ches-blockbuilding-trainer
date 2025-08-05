@@ -1,34 +1,18 @@
 import { experimentalSolve3x3x3IgnoringCenters } from "cubing/search";
-import { CubeLib, Solver } from "roux-trainers-utils";
+import { puzzles } from "cubing/puzzles";
 
-const SEARCH_DEPTH_L = 0;
-const SEARCH_DEPTH_R = 9;
-
-const fbSolver = Solver.FbSolver();
-
-export const patternToAlgorithm = async (pattern) => {
+export async function patternToAlgorithm(pattern) {
   const solution = await experimentalSolve3x3x3IgnoringCenters(pattern);
   const scramble = solution.invert();
-  const string = scramble.toString();
+  const algorithm = scramble.toString();
 
-  return string;
-};
+  return algorithm;
+}
 
-export const isFirstBlockSolved = async (pattern) => {
-  const alg = await patternToAlgorithm(pattern);
-  const scramble = alg.toString();
-  const cube = new CubeLib.CubieCube().apply(scramble);
-  const isSolved = fbSolver.is_solved(cube);
+export async function algorithmToPattern(algorithm) {
+  const puzzle = await puzzles["3x3x3"].kpuzzle();
+  const transformation = puzzle.algToTransformation(algorithm);
+  const pattern = transformation.toKPattern();
 
-  return isSolved;
-};
-
-export const findFirstBlockSolutions = (scramble, capacity) => {
-  const str = scramble.toString();
-  const cube = new CubeLib.CubieCube().apply(str);
-  const solutions = fbSolver
-    .solve(cube, SEARCH_DEPTH_L, SEARCH_DEPTH_R, capacity)
-    .map((soln) => soln.moves.map((m) => m.toString()));
-
-  return solutions;
-};
+  return pattern;
+}

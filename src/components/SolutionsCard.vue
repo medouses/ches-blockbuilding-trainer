@@ -10,7 +10,7 @@ const trainer = useTrainerStore();
     <template #title>solutions</template>
 
     <template #content>
-      <li v-for="solution of trainer.solutions" :key="solution">
+      <li v-for="solution of trainer.case?.solutions" :key="solution">
         {{ solution.join(" ") }}
       </li>
     </template>
