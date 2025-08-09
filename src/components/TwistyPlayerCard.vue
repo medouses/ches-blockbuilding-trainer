@@ -1,32 +1,19 @@
 <script setup>
-import { useTemplateRef, watch } from "vue";
+import { useTemplateRef } from "vue";
 import { Card } from "primevue";
 import { useSmartCubeStore } from "../stores/smartCube";
 import { useTwistyPlayer } from "../composables/useTwistyPlayer";
 
 const smartCube = useSmartCubeStore();
 const container = useTemplateRef("container");
-const player = useTwistyPlayer(container);
 
-watch(
-  () => smartCube.lastMove,
-  (newMove) => {
-    if (newMove) player.addMove(newMove.type);
-  }
-);
-
-watch(
-  () => smartCube.lastReportedPattern,
-  (newReportedPattern) => {
-    if (newReportedPattern) player.setPattern(newReportedPattern);
-  }
-);
+useTwistyPlayer(smartCube, container);
 </script>
 
 <template>
-  <Card>
+  <Card pt:body:class="twisty-card-body">
     <template #content>
-      <div ref="container" />
+      <div ref="container" class="twisty-container" />
     </template>
   </Card>
 </template>

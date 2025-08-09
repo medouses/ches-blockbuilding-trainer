@@ -55,5 +55,5 @@ export function useTrainer(smartCube) {
     }
   });
 
-  return { ...toRefs(state), setCore, next, abort };
+  return { ...toRefs(state), smartCube, setCore, next, abort };
 }

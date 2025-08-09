@@ -1,13 +1,16 @@
-import { CubeLib, Solver } from "roux-trainers-utils";
-import { randomScrambleForEvent } from "cubing/scramble";
-import { algorithmToPattern, patternToAlgorithm } from "../utils";
+import { CubeLib, Solver, Tracker } from "roux-trainers-utils";
+import {
+  formatAlgorithm,
+  algorithmToPattern,
+  patternToAlgorithm,
+} from "../utils";
 
 export class FirstBlockTrainerCore {
   static get Options() {
     return {
-      maxSolutions: 5,
       searchDepthL: 0,
       searchDepthR: 9,
+      maxSolutions: 5,
     };
   }
 
@@ -34,14 +37,14 @@ export class FirstBlockTrainerCore {
   };
 
   generate = async () => {
-    const scramble = (await randomScrambleForEvent("333")).toString();
+    const scramble = formatAlgorithm(Tracker.generateScramble("UDFBrRM", 8));
     const cube = new CubeLib.CubieCube().apply(scramble);
     const solutions = this._solver
       .solve(
         cube,
         this._options.searchDepthL,
         this._options.searchDepthR,
-        this._options.capacity
+        this._options.maxSolutions
       )
       .map((soln) => soln.moves.map((m) => m.toString()));
 
@@ -49,7 +52,7 @@ export class FirstBlockTrainerCore {
   };
 
   constructor(options) {
-    this._options = { ...this.Options, ...options };
+    this._options = { ...this.constructor.Options, ...options };
     this._solver = Solver.FbSolver();
   }
 }

@@ -1,1 +1,1 @@
-uma musume formula cum cubing simulator
+big ups to onionhoney for the case generation logic, and afedotov for the gan smart cube api!! i couldn't have made this without shamelessly ripping apart your code <3

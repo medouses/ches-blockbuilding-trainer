@@ -13,7 +13,7 @@ import ConnectionDialog from "./components/ConnectionDialog.vue";
       <ScrambleCard />
       <div class="trainer-layout-row-2">
         <SolutionsCard class="solutions-card" />
-        <TwistyPlayerCard />
+        <TwistyPlayerCard class="twisty-player-card" />
       </div>
       <ControlsCard />
     </div>

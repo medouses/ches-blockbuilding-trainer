@@ -1,6 +1,10 @@
 import { experimentalSolve3x3x3IgnoringCenters } from "cubing/search";
 import { puzzles } from "cubing/puzzles";
 
+export function formatAlgorithm(algorithm) {
+  return algorithm.replace(/([FRUBLDfrubldMESxyz][w]?['2]?)/g, "$1 ");
+}
+
 export async function patternToAlgorithm(pattern) {
   const solution = await experimentalSolve3x3x3IgnoringCenters(pattern);
   const scramble = solution.invert();

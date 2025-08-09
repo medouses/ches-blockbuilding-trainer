@@ -1,35 +1,11 @@
 <script setup>
-import { ref, computed, watch } from "vue";
 import { Card, Button } from "primevue";
-import { useSmartCubeStore } from "../stores/smartCube";
 import { useTrainerStore } from "../stores/trainer";
 import { TrainerStages } from "../services/trainerService";
+import { useScrambleProgress } from "../composables/useScrambleProgress";
 
-const smartCube = useSmartCubeStore();
 const trainer = useTrainerStore();
-const progress = ref(0);
-const steps = computed(() => trainer.case.scramble?.split(" ") || []);
-
-watch(
-  () => trainer.stage,
-  () => (progress.value = 0)
-);
-
-watch(
-  () => smartCube.currentPattern,
-  (newPattern) => {
-    if (newPattern && trainer.stage == TrainerStages.Scrambling) {
-      const algorithm = steps.value.slice(0, progress.value + 1).join(" ");
-      const puzzle = newPattern.kpuzzle;
-      const transformation = puzzle.algToTransformation(algorithm);
-      const targetPattern = transformation.toKPattern();
-
-      if (newPattern.isIdentical(targetPattern)) {
-        progress.value++;
-      }
-    }
-  }
-);
+const { progress, steps } = useScrambleProgress(trainer);
 </script>
 
 <template>
@@ -46,10 +22,7 @@ watch(
                 {{ steps.slice(progress).join(" ") }}
               </span>
             </template>
-            <span
-              v-else-if="trainer.stage == TrainerStages.Solving"
-              class="scramble-inactive"
-            >
+            <span v-else class="scramble-inactive">
               {{ steps.join(" ") }}
             </span>
           </template>

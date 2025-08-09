@@ -1,17 +1,9 @@
-import { shallowRef, onMounted, onUnmounted } from "vue";
+import { shallowRef, onMounted, onUnmounted, watch } from "vue";
 import { TwistyPlayer } from "cubing/twisty";
 import { patternToAlgorithm } from "../utils";
 
-export function useTwistyPlayer(container) {
+export function useTwistyPlayer(smartCube, container) {
   const player = shallowRef(null);
-
-  function addMove(move) {
-    player.value.experimentalAddMove(move, { cancel: false });
-  }
-
-  async function setPattern(pattern) {
-    player.value.alg = await patternToAlgorithm(pattern);
-  }
 
   onMounted(() => {
     if (!player.value) {
@@ -28,5 +20,23 @@ export function useTwistyPlayer(container) {
 
   onUnmounted(() => player.value?.remove());
 
-  return { addMove, setPattern };
+  watch(
+    () => smartCube.lastMove,
+    (newMove) => {
+      if (newMove) {
+        player.value.experimentalAddMove(newMove.type, { cancel: false });
+      }
+    }
+  );
+
+  watch(
+    () => smartCube.lastReportedPattern,
+    async (newReportedPattern) => {
+      if (newReportedPattern) {
+        player.value.alg = await patternToAlgorithm(newReportedPattern);
+      }
+    }
+  );
+
+  return { player };
 }
