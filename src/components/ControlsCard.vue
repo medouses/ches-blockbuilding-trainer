@@ -9,6 +9,8 @@ const trainer = useTrainerStore();
   <Card>
     <template #content>
       <div class="controls-row">
+        <Button label="hint" @click="trainer.next" />
+        <Button label="reveal" @click="trainer.abort" />
         <Button label="next" @click="trainer.next" />
         <Button label="abort" @click="trainer.abort" />
       </div>

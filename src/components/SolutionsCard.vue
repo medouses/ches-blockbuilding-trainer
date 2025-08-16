@@ -10,13 +10,15 @@ const trainer = useTrainerStore();
     <template #title>solutions</template>
 
     <template #content>
-      <li
-        v-for="solution of trainer.case?.solutions"
-        :key="solution"
-        class="solutions-text"
-      >
-        {{ solution.join(" ") }}
-      </li>
+      <ul>
+        <li
+          v-for="solution of trainer.case?.solutions"
+          :key="solution"
+          class="solutions-text"
+        >
+          {{ solution.join(" ") }}
+        </li>
+      </ul>
     </template>
   </Card>
 </template>

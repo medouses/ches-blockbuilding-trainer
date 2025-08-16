@@ -28,7 +28,8 @@ const { progress, steps } = useScrambleProgress(trainer);
           </template>
           <span v-else>press next to begin</span>
         </div>
-        <Button label="edit" />
+
+        <span>min n moves</span>
       </div>
     </template>
   </Card>
